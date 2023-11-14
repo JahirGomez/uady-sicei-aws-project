@@ -1,0 +1,5 @@
+# Created at 2023-11-14T15:50:11.298
+Boot Manifest-JAR contains absolute paths in classpath 'D:\00UNIVERSIDAD\Semestre VII\Materias optativas (9)\AWS academy (9)\Proyecto\Primera entrega\sicei\target\test-classes'
+Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
+'other' has different root
+

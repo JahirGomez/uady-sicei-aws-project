@@ -1,0 +1,16 @@
+com\uady\sicei\Controller\ProfesorController.class
+com\uady\sicei\Services\ProfesorService.class
+com\uady\sicei\Model\Request\PreProfesorInfo$PreProfesorInfoBuilder.class
+com\uady\sicei\Model\Profesor.class
+com\uady\sicei\Exception\DatosIncorrectosException.class
+com\uady\sicei\Model\Request\PreAlumnoInfo$PreAlumnoInfoBuilder.class
+com\uady\sicei\Model\Request\PreAlumnoInfo.class
+com\uady\sicei\Services\AlumnoService.class
+com\uady\sicei\Controller\AlumnoController.class
+com\uady\sicei\Model\Profesor$ProfesorBuilder.class
+com\uady\sicei\Config\OpenAPIConfig.class
+com\uady\sicei\Model\Alumno$AlumnoBuilder.class
+com\uady\sicei\SiceiApplication.class
+com\uady\sicei\Model\Request\PreProfesorInfo.class
+com\uady\sicei\Exception\DatosIncorrectosException$DatosIncorrectosExceptionBuilder.class
+com\uady\sicei\Model\Alumno.class
