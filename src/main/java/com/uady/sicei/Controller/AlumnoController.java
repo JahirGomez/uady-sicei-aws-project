@@ -86,9 +86,11 @@ public class AlumnoController {
 
     @PostMapping("/{id}/fotoPerfil")
     @Operation(summary = "agregar foto estudiante")
-    public ResponseEntity<String> uploadPhotoProfile(@PathVariable int id, @RequestParam("foto") MultipartFile file) {
-        String photoProfile = this.alumnoService.uploadPhotoProfile(id, file);
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(photoProfile);
+    public ResponseEntity<Map<String, String>> uploadPhotoProfile(@PathVariable int id, @RequestParam("foto") MultipartFile file) {
+        String fotoPerfilUrl = alumnoService.uploadPhotoProfile(id, file);
+        Map<String, String> response = new HashMap<>();
+        response.put("fotoPerfilUrl", fotoPerfilUrl);
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(response);
     }
 
     @PostMapping(value = "/{id}/email", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -100,38 +102,49 @@ public class AlumnoController {
 
     @PostMapping("/{id}/session/login")
     @Operation(summary = "iniciar sesion")
-    public ResponseEntity<String> login(@PathVariable int id, @RequestBody Alumno alumno) {
-        String session = this.alumnoService.login(id, alumno.getPassword());
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(session);
+    public ResponseEntity<Map<String, String>> login(@PathVariable int id, @RequestBody Alumno alumno) {
+        String session = alumnoService.login(id, alumno.getPassword());
+        Map<String, String> response = new HashMap<>();
+        response.put("sessionString", session);
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(response);
     }
 
 
     @PostMapping("/{id}/session/verify")
     @Operation(summary = "verificar sesion")
-    public ResponseEntity<String> verifySession(@PathVariable int id, @RequestBody Map<String, String> requestBody) {
-        String session = requestBody.get("sessionString");
-        if (session != null) {
-            boolean valid = this.alumnoService.verifySession(id, session);
+    public ResponseEntity<Map<String, Boolean>> verifySession(@PathVariable int id, @RequestBody Map<String, String> requestBody) {
+        String sessionString = requestBody.get("sessionString");
+        Map<String, Boolean> response = new HashMap<>();
+
+        if (sessionString != null) {
+            boolean valid = alumnoService.verifySession(id, sessionString);
+            response.put("isValid", valid);
+
             if (valid) {
-                return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(session);
+                return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(response);
             } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON).body(session);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON).body(response);
             }
         } else {
-            return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body(session);
+            response.put("isValid", false);
+            return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body(response);
         }
     }
 
     
     @PostMapping("/{id}/session/logout")
     @Operation(summary = "cerrar sesion")
-    public ResponseEntity<String> logout(@PathVariable int id, @RequestBody Map<String, String> requestBody) {
+    public ResponseEntity<Map<String, String>> logout(@PathVariable int id, @RequestBody Map<String, String> requestBody) {
         String sessionString = requestBody.get("sessionString");
+        Map<String, String> response = new HashMap<>();
+
         if (sessionString != null) {
-            this.alumnoService.logout(id, sessionString);
-            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body("Sesión cerrada con éxito");
+            alumnoService.logout(id, sessionString);
+            response.put("message", "Sesión cerrada con éxito");
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(response);
         } else {
-            return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body("No se proporcionó una sesión");
+            response.put("error", "No se proporcionó una sesión");
+            return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body(response);
         }
     }
 }

@@ -74,6 +74,9 @@ public class AlumnoService {
     }
 
     public PreAlumnoInfo actualizar(int id, PreAlumnoInfo alumnoAux){
+        if (alumnoAux.getNombres() == null || alumnoAux.getApellidos() == null || alumnoAux.getMatricula() == null || alumnoAux.getPromedio()==0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Los datos del alumno son inválidos");
+        }
         Optional<PreAlumnoInfo> alumnoExistente= alumnoRepository.findById(id);
         if (alumnoExistente.isPresent()) {
             PreAlumnoInfo alumnoUpdated = alumnoExistente.get();
